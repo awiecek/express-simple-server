@@ -1,15 +1,17 @@
-const axios = require('axios');
-const express = require('express');
+const axios = require("axios");
+const express = require("express");
+const colors = require("colors/safe");
+
 const server = express();
 const PORT = process.env.PORT || 3300;
 
-server.use(express.static('public'));
+server.use(express.static("public"));
 
-server.get('/', (_req, res) => {
-  res.send('Hello Express!');
+server.get("/", (_req, res) => {
+  res.send("Hello Express!");
 });
 
-server.get('/fetch-wordpress-graphql', async (_req, res) => {
+server.get("/fetch-wordpress-graphql", async (_req, res) => {
   const query = `
     query QueryPosts {
       posts {
@@ -37,9 +39,19 @@ server.get('/fetch-wordpress-graphql', async (_req, res) => {
   res.send(response.data.data.posts.nodes);
 });
 
-server.get('/envs', (req, res) => {
+server.get("/envs", (req, res) => {
   console.log(process.env);
-  res.send('Envs displayed in logs!');
+  res.send("Envs displayed in logs!");
+});
+
+server.get("/ansi-logs", (req, res) => {
+  console.log(colors.red("this is red"));
+  console.log(colors.green("this is green"));
+  console.log(colors.blue("this is blue"));
+  console.log(colors.bgCyan("this is cyan bg"));
+  console.log(colors.bgMagenta("this is magenta bg"));
+  console.log(colors.bgYellow("this is yellow bg"));
+  res.send("Ansi colors displayed in logs!");
 });
 
 server.listen(PORT, () => {
